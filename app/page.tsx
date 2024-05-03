@@ -1,3 +1,4 @@
+"use client";
 // pages/homepage.tsx
 
 import React, { useEffect, useState } from "react";
