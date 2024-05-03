@@ -1,11 +1,45 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 const Homepage: React.FC = () => {
+  const [featuredArtists, setFeaturedArtists] = useState([]);
+  const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
+
+  useEffect(() => {
+    // Fetch featured artists
+    axios
+      .get("https://api.spotify.com/v1/browse/featured-playlists", {
+        headers: {
+          Authorization: `Bearer ${"BQAXirKga6d0yxjZwgTGnltPRlnRY-Nf9-340er8v8HOCSv2t1xA7frNSJbBuqfvL3Dm0mvvSDPUSuCA5fYM7yH6T7SOB4YqAVNLOT3-kaPa2ZuJx6g"}`,
+        },
+      })
+      .then((response) => {
+        setFeaturedPlaylists(response.data.playlists.items);
+      })
+      .catch((error) => {
+        console.error("Error fetching featured playlists:", error);
+      });
+
+    // Fetch featured playlists
+    axios
+      .get("https://api.spotify.com/v1/browse/featured-artists", {
+        headers: {
+          Authorization: `Bearer ${"BQAXirKga6d0yxjZwgTGnltPRlnRY-Nf9-340er8v8HOCSv2t1xA7frNSJbBuqfvL3Dm0mvvSDPUSuCA5fYM7yH6T7SOB4YqAVNLOT3-kaPa2ZuJx6g"}`,
+        },
+      })
+      .then((response) => {
+        setFeaturedArtists(response.data.artists.items);
+      })
+      .catch((error) => {
+        console.error("Error fetching featured artists:", error);
+      });
+  }, []);
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-      <header className="flex justify-between items-center w-full py-4 px-8">
+    <div className="bg-gray-900 text-white min-h-screen">
+      <header className="py-4 px-8 flex justify-between items-center">
         <h1 className="text-3xl">SpotiSky</h1>
         <nav>
           <ul className="flex space-x-6">
@@ -22,21 +56,30 @@ const Homepage: React.FC = () => {
           </ul>
         </nav>
       </header>
-      <main className="flex flex-col items-center justify-center flex-grow">
-        <h2 className="text-5xl font-bold mb-8">Music for everyone</h2>
-        <p className="text-xl mb-16">
-          Millions of songs. No credit card needed.
-        </p>
-        <div className="flex space-x-4">
-          <Link href="/signup">
-            <a className="button bg-green-500 hover:bg-green-600">
-              Sign Up for Free
-            </a>
-          </Link>
-          <Link href="/login">
-            <a className="button bg-gray-800 hover:bg-gray-700">Log In</a>
-          </Link>
-        </div>
+      <main className="px-8 py-16">
+        <section className="mb-12">
+          <h2 className="text-3xl mb-6">Featured Artists</h2>
+          <div className="flex space-x-4">
+            {featuredArtists.map((artist) => (
+              <div key={artist.id} className="text-center">
+                <p>{artist.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        <section>
+          <h2 className="text-3xl mb-6">Featured Playlists</h2>
+          <div className="grid grid-cols-3 gap-4">
+            {featuredPlaylists.map((playlist) => (
+              <div
+                key={playlist.id}
+                className="bg-gray-800 p-4 rounded-lg text-center"
+              >
+                <p>{playlist.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
       <footer className="text-center py-8">
         <p>&copy; 2024 SpotiSky</p>
