@@ -1,42 +1,46 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+import Link from "next/link";
 
-const Homepage = () => {
-  const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
-
-  useEffect(() => {
-    const fetchFeaturedPlaylists = async () => {
-      try {
-        const response = await axios.get(
-          "https://api.spotify.com/v1/browse/featured-playlists",
-          {
-            headers: {
-              Authorization: `Bearer ${"BQAXirKga6d0yxjZwgTGnltPRlnRY-Nf9-340er8v8HOCSv2t1xA7frNSJbBuqfvL3Dm0mvvSDPUSuCA5fYM7yH6T7SOB4YqAVNLOT3-kaPa2ZuJx6g"}`,
-            },
-          }
-        );
-        setFeaturedPlaylists(response.data.playlists.items);
-      } catch (error) {
-        console.error("Error fetching featured playlists:", error);
-      }
-    };
-
-    fetchFeaturedPlaylists();
-  }, []);
-
+const Homepage: React.FC = () => {
   return (
-    <div>
-      <h1>Welcome to SpotiSky!</h1>
-      <h2>Featured Playlists</h2>
-      <ul>
-        {featuredPlaylists.map((playlist) => (
-          <li key={playlist.id}>
-            <img src={playlist.images[0].url} alt={playlist.name} />
-            <p>{playlist.name}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+      <header className="flex justify-between items-center w-full py-4 px-8">
+        <h1 className="text-3xl">SpotiSky</h1>
+        <nav>
+          <ul className="flex space-x-6">
+            <li>
+              <Link href="/signup">
+                <a className="hover:text-gray-300">Sign Up</a>
+              </Link>
+            </li>
+            <li>
+              <Link href="/login">
+                <a className="hover:text-gray-300">Log In</a>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <main className="flex flex-col items-center justify-center flex-grow">
+        <h2 className="text-5xl font-bold mb-8">Music for everyone</h2>
+        <p className="text-xl mb-16">
+          Millions of songs. No credit card needed.
+        </p>
+        <div className="flex space-x-4">
+          <Link href="/signup">
+            <a className="button bg-green-500 hover:bg-green-600">
+              Sign Up for Free
+            </a>
+          </Link>
+          <Link href="/login">
+            <a className="button bg-gray-800 hover:bg-gray-700">Log In</a>
+          </Link>
+        </div>
+      </main>
+      <footer className="text-center py-8">
+        <p>&copy; 2024 SpotiSky</p>
+      </footer>
     </div>
   );
 };
