@@ -1,5 +1,4 @@
-// utils/spotifyAuth.js
-
+// app/lib/spotifyAuth.js
 const axios = require("axios");
 
 // Set up the authorization URL
@@ -27,7 +26,10 @@ async function exchangeCodeForToken(authorizationCode) {
     client_secret: clientSecret,
   });
 
-  return response.data.access_token;
+  return {
+    accessToken: response.data.access_token,
+    refreshToken: response.data.refresh_token,
+  };
 }
 
 module.exports = { getAuthorizationUrl, exchangeCodeForToken };

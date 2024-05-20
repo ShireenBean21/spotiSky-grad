@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Button from "./button/button";
-import Input from "./input/input";
+import Button from "../components/button/button";
+import Input from "../components/input/input";
 export default function Signup() {
   return (
     <div className="h-screen flex flex-col justify-center items-center text-black gap-5 max-w-lg m-auto my-80">

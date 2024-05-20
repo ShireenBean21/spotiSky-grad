@@ -1,89 +1,110 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
+import SideNav from "./components/sidenav";
+import Link from "next/link";
 
-const Homepage: React.FC = () => {
-  const [featuredArtists, setFeaturedArtists] = useState([]);
-  const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
+// Define types for the data
+interface Artist {
+  id: string;
+  images: { url: string }[];
+  name: string;
+}
+
+interface Playlist {
+  id: string;
+  images: { url: string }[];
+  name: string;
+}
+
+const Homepage = () => {
+  const [featuredArtists, setFeaturedArtists] = useState<Artist[]>([]);
+  const [featuredPlaylists, setFeaturedPlaylists] = useState<Playlist[]>([]);
 
   useEffect(() => {
-    // Fetch featured artists
-    axios
-      .get("https://api.spotify.com/v1/browse/featured-playlists", {
-        headers: {
-          Authorization: `Bearer ${"BQAXirKga6d0yxjZwgTGnltPRlnRY-Nf9-340er8v8HOCSv2t1xA7frNSJbBuqfvL3Dm0mvvSDPUSuCA5fYM7yH6T7SOB4YqAVNLOT3-kaPa2ZuJx6g"}`,
-        },
-      })
-      .then((response) => {
+    const fetchPlaylists = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.spotify.com/v1/browse/featured-playlists",
+          {
+            headers: {
+              Authorization: `Bearer ${"BQDv_da-_MD9rr5paaNK_1h2T4LzO2WocbSp6VW54zGJ5gwCa1WQNtHtzmS_ydEag-i8rKS1is09hFjjzroXs9tx0aGrftlUb7ALJv9KqXw3fLehXkY"}`,
+            },
+          }
+        );
+        console.log("Featured Playlists:", response.data.playlists.items); // Debug log
         setFeaturedPlaylists(response.data.playlists.items);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching featured playlists:", error);
-      });
+      }
+    };
 
-    // Fetch featured playlists
-    axios
-      .get("https://api.spotify.com/v1/browse/featured-artists", {
-        headers: {
-          Authorization: `Bearer ${"BQAXirKga6d0yxjZwgTGnltPRlnRY-Nf9-340er8v8HOCSv2t1xA7frNSJbBuqfvL3Dm0mvvSDPUSuCA5fYM7yH6T7SOB4YqAVNLOT3-kaPa2ZuJx6g"}`,
-        },
-      })
-      .then((response) => {
-        setFeaturedArtists(response.data.artists.items);
-      })
-      .catch((error) => {
+    const fetchArtists = async () => {
+      try {
+        const response = await axios.get("https://api.spotify.com/v1/artists", {
+          headers: {
+            Authorization: `Bearer ${"BQDv_da-_MD9rr5paaNK_1h2T4LzO2WocbSp6VW54zGJ5gwCa1WQNtHtzmS_ydEag-i8rKS1is09hFjjzroXs9tx0aGrftlUb7ALJv9KqXw3fLehXkY"}`,
+          },
+        });
+        console.log("Featured Artists:", response.data.artists); // Debug log
+        setFeaturedArtists(response.data.artists);
+      } catch (error) {
         console.error("Error fetching featured artists:", error);
-      });
+      }
+    };
+
+    fetchPlaylists();
+    fetchArtists();
   }, []);
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen">
-      <header className="py-4 px-8 flex justify-between items-center">
-        <h1 className="text-3xl">SpotiSky</h1>
-        <nav>
-          <ul className="flex space-x-6">
-            <li>
-              <Link href="/signup">
-                <a className="hover:text-gray-300">Sign Up</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/login">
-                <a className="hover:text-gray-300">Log In</a>
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main className="px-8 py-16">
-        <section className="mb-12">
-          <h2 className="text-3xl mb-6">Featured Artists</h2>
-          <div className="flex space-x-4">
-            {featuredArtists.map((artist) => (
-              <div key={artist.id} className="text-center">
-                <p>{artist.name}</p>
+    <div className="grid grid-cols-12 gap-4 min-h-screen bg-violet-600 text-white">
+      <div className="col-span-2 bg-violet-800 p-4">
+        <SideNav />
+      </div>
+      <div className="col-span-10 p-4">
+        <h1 className="text-3xl font-bold mb-4">New Release Albums</h1>
+        <div className="grid grid-cols-4 gap-9">
+          {featuredArtists.slice(0, 6).map((artist) => (
+            <Link
+              href={`https://open.spotify.com/artist/${artist.id}`}
+              key={artist.id}
+            >
+              <div className="flex flex-col items-center cursor-pointer">
+                <Image
+                  src={artist.images[0]?.url || "/placeholder.jpg"}
+                  alt={artist.name}
+                  width={150}
+                  height={150}
+                  className="rounded-lg"
+                />
+                <p className="mt-2 text-center">{artist.name}</p>
               </div>
-            ))}
-          </div>
-        </section>
-        <section>
-          <h2 className="text-3xl mb-6">Featured Playlists</h2>
-          <div className="grid grid-cols-3 gap-4">
-            {featuredPlaylists.map((playlist) => (
-              <div
-                key={playlist.id}
-                className="bg-gray-800 p-4 rounded-lg text-center"
-              >
-                <p>{playlist.name}</p>
+            </Link>
+          ))}
+        </div>
+        <h1 className="text-3xl font-bold mt-8 mb-4">Featured Playlists</h1>
+        <div className="grid grid-cols-4 gap-9">
+          {featuredPlaylists.slice(0, 6).map((playlist) => (
+            <Link
+              href={`https://open.spotify.com/playlist/${playlist.id}`}
+              key={playlist.id}
+            >
+              <div className="flex flex-col items-center cursor-pointer">
+                <Image
+                  src={playlist.images[0]?.url || "/placeholder.jpg"}
+                  alt={playlist.name}
+                  width={150}
+                  height={150}
+                  className="rounded-lg"
+                />
+                <p className="mt-2 text-center">{playlist.name}</p>
               </div>
-            ))}
-          </div>
-        </section>
-      </main>
-      <footer className="text-center py-8">
-        <p>&copy; 2024 SpotiSky</p>
-      </footer>
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
