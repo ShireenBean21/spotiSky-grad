@@ -1,37 +1,30 @@
 // app/components/SideNav.tsx
 "use client";
 import React from "react";
-import { FaHome, FaPlus, FaMusic } from "react-icons/fa";
+import { FaPlus, FaMusic } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 const SideNav: React.FC = () => {
   const router = useRouter();
 
   return (
-    <div className="bg-violet-800 text-white p-4 fixed top-60 left-0 h-[calc(100vh-60px)] w-60 z-10">
-      <div className="nav-links">
-        <div
-          className="link flex items-center mb-4 cursor-pointer"
-          onClick={() => router.push("/")}
-        >
-          <FaHome className="icon mr-2" />
-          <span>Home</span>
-        </div>
-        <div
-          className="link flex items-center mb-4 cursor-pointer"
-          onClick={() => router.push("/create-playlist")}
+    <div className="flex flex-col bg-fuchsia-200/50 text-white p-4 mt-6 rounded-md w-60">
+      <nav className="nav-links flex-grow">
+        <button
+          className="flex items-center mb-4 cursor-pointer bg-lilac-light text-black p-2 rounded-md w-full"
+          onClick={() => router.push("/createplaylist")}
         >
           <FaPlus className="icon mr-2" />
           <span>Create Playlist</span>
-        </div>
-        <div
-          className="link flex items-center mb-4 cursor-pointer"
+        </button>
+        <button
+          className="flex items-center mb-4 cursor-pointer bg-lilac-light text-black p-2 rounded-md w-full"
           onClick={() => router.push("/genres")}
         >
           <FaMusic className="icon mr-2" />
           <span>Genres</span>
-        </div>
-      </div>
+        </button>
+      </nav>
     </div>
   );
 };

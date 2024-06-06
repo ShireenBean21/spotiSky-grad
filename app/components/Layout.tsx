@@ -4,13 +4,13 @@ import { useState } from "react";
 import Header from "./Header";
 import Sidebar from "./sidebar";
 import SideNav from "./sidenav";
+import ThemeToggle from "./themeToggle";
 import { useSearchParams } from "next/navigation";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const searchParams = useSearchParams();
 
-  // Check if searchParams is defined before accessing its properties
   const searchParamsObject = searchParams
     ? Object.fromEntries(searchParams.entries())
     : {};
@@ -20,16 +20,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <div className="flex">
-      <Sidebar onSearchClick={handleSearchClick} />
-      <SideNav />
-      <div className="flex-grow ml-60">
-        <Header
-          showSearchBar={showSearchBar}
-          searchParams={searchParamsObject}
-          router={undefined}
-        />
-        <main className="p-4 pt-16">{children}</main>
+    <div className="flex flex-col h-screen bg-white dark:bg-black text-black dark:text-white">
+      <Header showSearchBar={showSearchBar} searchParams={searchParamsObject} />
+      <div className="flex">
+        <div className="flex flex-col">
+          <Sidebar onSearchClick={handleSearchClick} />
+          <SideNav />
+        </div>
+        <main className="flex-grow p-4">{children}</main>
       </div>
     </div>
   );

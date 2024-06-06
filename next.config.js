@@ -1,4 +1,15 @@
 // next.config.js
+module.exports = {
+  env: {
+    SPOTIFY_CLIENT_ID: process.env.SPOTIFY_CLIENT_ID,
+    SPOTIFY_CLIENT_SECRET: process.env.SPOTIFY_CLIENT_SECRET,
+    REDIRECT_URI: process.env.REDIRECT_URI,
+  },
+  reactStrictMode: true,
+  experimental: {
+    appDir: true,
+  },
+};
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -19,6 +30,10 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "**.spotifycdn.com",
+      },
+      {
+        protocol: "https",
+        hostname: "mosaic.scdn.co",
       },
     ],
   },

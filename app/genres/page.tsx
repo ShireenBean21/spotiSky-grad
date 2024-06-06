@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Layout from "../components/Layout";
 
 const accessToken =
-  "BQAPtG8VJCu70uXu0sIA4WZBeEmdxEnDEGHK0qBbhJNJYzY-OYOmOM5Q4UjeL2uQyHGrkk5xKznet0NX1kgz_PUdx3RQbFxafUGjSyBnJbEtDWkhDbY"; // Replace with your actual access token
+  "BQBOmW02XEAUaIRoxr-RU_BsdAX8yvY0TUioE_KB2iY991K-uKWhIGLmgstdK7Hyv7ZXVg8T-4z8GB4IKYgWIfE-LZdvSED77saBRl7tAJ6qbROLWYY"; // Replace with your actual access token
 
 const genreSeeds = ["hip-hop", "r-n-b", "pop", "jazz"];
 
@@ -13,7 +14,7 @@ const fetchTracksForGenre = async (genre: string) => {
     `https://api.spotify.com/v1/recommendations?seed_genres=${genre}&limit=4`,
     {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${"BQBOmW02XEAUaIRoxr-RU_BsdAX8yvY0TUioE_KB2iY991K-uKWhIGLmgstdK7Hyv7ZXVg8T-4z8GB4IKYgWIfE-LZdvSED77saBRl7tAJ6qbROLWYY"}`,
       },
     }
   );
@@ -70,13 +71,15 @@ const GenresPage: React.FC = () => {
   );
 
   return (
-    <div className="p-4 min-h-screen bg-violet-600 text-white">
-      <h1 className="text-3xl font-bold mb-4">Genres</h1>
-      {renderGenreSection("Hip Hop", hipHop)}
-      {renderGenreSection("R&B", randb)}
-      {renderGenreSection("Pop", pop)}
-      {renderGenreSection("Jazz", jazz)}
-    </div>
+    <Layout>
+      <div className="p-4 min-h-screen bg-violet-50 text-slate-500 hover:text-slate-">
+        <h1 className="text-3xl font-bold mb-4">Genres</h1>
+        {renderGenreSection("Hip Hop", hipHop)}
+        {renderGenreSection("R&B", randb)}
+        {renderGenreSection("Pop", pop)}
+        {renderGenreSection("Jazz", jazz)}
+      </div>
+    </Layout>
   );
 };
 

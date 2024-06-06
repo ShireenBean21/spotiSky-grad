@@ -1,11 +1,14 @@
+// pages/index.tsx
+import withAuth from "./components/withAuth";
 import Head from "next/head";
 import Link from "next/link";
+import axios from "axios";
 
 interface HomeProps {
   genres: string[];
 }
 
-export default function Home({ genres }: HomeProps) {
+const Home = ({ genres }: HomeProps) => {
   return (
     <div className="container">
       <Head>
@@ -23,45 +26,42 @@ export default function Home({ genres }: HomeProps) {
         <ul>
           {genres.map((genre) => (
             <li key={genre}>
-              <Link href={`/${genre}`}>
-                <a>{genre}</a>
-              </Link>
+              <Link href={`/${genre}`}>{genre}</Link>
             </li>
           ))}
         </ul>
       </aside>
-      {/* <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer> */}
     </div>
   );
-}
+};
 
 export async function getStaticProps() {
-  const data = await fetch(
-    "https://api.spotify.com/v1/recommendations/available-genre-seeds",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.SPOTIFY_OAUTH_TOKEN}`,
+  const token = process.env.SPOTIFY_CLIENT_ID; // Use actual token fetching here
+
+  try {
+    const response = await axios.get(
+      "https://api.spotify.com/v1/recommendations/available-genre-seeds",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return {
+      props: {
+        genres: response.data.genres,
       },
-    }
-  ).then((response) => response.json());
-
-  console.log(data);
-
-  return {
-    props: {
-      genres: data.genres,
-    },
-    revalidate: 60,
-  };
+      revalidate: 60,
+    };
+  } catch (error) {
+    console.error("Failed to fetch genres from Spotify:", error);
+    return {
+      props: {
+        genres: [],
+      },
+    };
+  }
 }
+
+export default withAuth(Home);

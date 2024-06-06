@@ -5,54 +5,51 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap");
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --color-lilac: #c8a2c8;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: white;
+  color: black;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+body.dark {
+  background-color: black;
+  color: white;
 }
-/* styles/globals.css */
-body {
-  margin: 0;
-  font-family: "Arial", sans-serif;
+
+.bg-lilac {
+  background-color: var(--color-lilac);
+}
+
+.text-lilac {
+  color: var(--color-lilac);
+}
+
+.sidebar {
+  background-color: none;
+  color: cream;
+  width: 15rem; /* Adjust width as needed */
+  padding: 1rem;
+  position: fixed;
+  top: 4rem; /* Below the Header */
+  height: calc(100vh - 4rem); /* Full height minus Header height */
 }
 
 .sidenav {
+  background-color: none;
+  color: black;
+  width: 15rem; /* Adjust width as needed */
+  padding: 1rem;
   position: fixed;
-  top: 60px; /* Adjust this value based on the height of your Sidebar */
-  left: 0;
-  width: 240px;
+  top: calc(4rem + 4rem); /* Below the Sidebar */
   height: calc(
-    100vh - 60px
-  ); /* Adjust this value based on the height of your Sidebar */
-  background-color: #6c63ff; /* Adjust this color as needed */
-  z-index: 10; /* Ensure it is above other content */
+    100vh - 4rem - 4rem
+  ); /* Full height minus Header and Sidebar height */
 }
 
-.header {
-  width: calc(100% - 240px); /* Adjust based on the Sidebar width */
-  margin-left: 240px; /* Adjust based on the Sidebar width */
-  z-index: 20; /* Ensure it is above SideNav */
+body.dark .sidebar,
+body.dark .sidenav {
+  background-color: none;
+  color: white;
 }

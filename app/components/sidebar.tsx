@@ -1,7 +1,6 @@
-// app/components/Sidebar.tsx
+"use client";
 import Link from "next/link";
 import { FiHome, FiSearch } from "react-icons/fi";
-import Image from "next/image";
 
 interface SidebarProps {
   onSearchClick: () => void;
@@ -9,22 +8,19 @@ interface SidebarProps {
 
 const Sidebar = ({ onSearchClick }: SidebarProps) => {
   return (
-    <div className="h-60 w-60 bg-black flex flex-col items-center p-4 fixed top-0 left-0 z-20">
-      <div className="mb-6">
-        <Image src="/logo.png" alt="Logo" width={50} height={50} />
-      </div>
+    <div className="w-60 bg-fuchsia-200/50 rounded-md text-gray flex flex-col items-center py-4 space-y-6">
       <Link href="/">
-        <div className="flex flex-col items-center space-y-2 cursor-pointer mb-4">
-          <FiHome className="text-2xl text-white" />
-          <span className="text-xs text-white">Home</span>
+        <div className="flex items-center space-x-2 cursor-pointer">
+          <FiHome className="text-2xl" />
+          <span>Home</span>
         </div>
       </Link>
       <div
         onClick={onSearchClick}
-        className="flex flex-col items-center space-y-2 cursor-pointer"
+        className="flex items-center space-x-2 cursor-pointer"
       >
-        <FiSearch className="text-2xl text-white" />
-        <span className="text-xs text-white">Search</span>
+        <FiSearch className="text-2xl" />
+        <span>Search</span>
       </div>
     </div>
   );

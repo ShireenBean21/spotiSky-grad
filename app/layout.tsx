@@ -1,25 +1,46 @@
 // app/layout.tsx
 import React, { ReactNode } from "react";
 import { Inter } from "next/font/google";
-import "./globals.css"; // Import global styles
-// import Navbar from "@/components/navbar";
+import ThemeToggle from "./components/themeToggle";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
-
-interface RootLayoutProps {
-  children: ReactNode; // Define the type of the children prop
-}
-
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <head>{/* Add your head elements here */}</head>
-      <body className={inter.className}>
-        {/* <Navbar /> */}
-        {children}
+      <body>
+        <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+          <ThemeToggle />
+
+          {}
+        </div>
+        <main>{children}</main>
       </body>
     </html>
   );
-};
+}
 
-export default RootLayout;
+// const inter = Inter({ subsets: ["latin"] });
+
+// interface RootLayoutProps {
+//   children: ReactNode;
+// }
+
+// const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+//   return (
+//     <html lang="en">
+//       <head>{/* Add your head elements here */}</head>
+//       <body className={`${inter.className} transition-colors duration-300`}>
+//         <div className="min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+//           <ThemeToggle />
+//           {children}
+//         </div>
+//       </body>
+//     </html>
+//   );
+// };
+
+// export default RootLayout;
