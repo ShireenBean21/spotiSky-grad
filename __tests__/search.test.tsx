@@ -54,7 +54,7 @@ describe("SearchPage", () => {
 
     // Use waitFor to wait for the asynchronous rendering of search results
     //@ts-ignore
-    const searchResult = await waitFor(() => screen.getByText("Track 1"));
+    const searchResult = await screen.findByText("Track 1");
 
     expect(searchResult).toBeInTheDocument();
   });
