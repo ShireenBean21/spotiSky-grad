@@ -34,7 +34,7 @@ const Homepage = () => {
             },
           }
         );
-        setFeaturedPlaylists(response.data.playlists.items);
+        setFeaturedPlaylists(response?.data.playlists.items);
       } catch (error) {
         console.error("Error fetching featured playlists:", error);
       }
@@ -50,7 +50,7 @@ const Homepage = () => {
             },
           }
         );
-        setRihannaAlbums(response.data.items);
+        setRihannaAlbums(response?.data.items);
       } catch (error) {
         console.error("Error fetching Rihanna's albums:", error);
       }

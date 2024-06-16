@@ -9,19 +9,18 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("Sidebar", () => {
+  const mockPush = jest.fn();
+  const mockOnSearchClick = jest.fn();
+
   beforeEach(() => {
+    mockPush.mockClear();
+    mockOnSearchClick.mockClear();
     //@ts-ignore
-    useRouter.mockReturnValue({ query: {} });
+    useRouter.mockReturnValue({ push: mockPush, query: {} });
   });
 
   it("renders the sidebar correctly", () => {
-    render(
-      <Sidebar
-        onSearchClick={function (): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-    );
+    render(<Sidebar onSearchClick={mockOnSearchClick} />);
 
     // Check for the presence of Home and Search links
     const homeElement = screen.getByText("Home");
@@ -32,13 +31,21 @@ describe("Sidebar", () => {
   });
 
   it("calls onSearchClick when the search button is clicked", () => {
-    const mockOnSearchClick = jest.fn();
-
     render(<Sidebar onSearchClick={mockOnSearchClick} />);
 
     const searchElement = screen.getByText("Search");
     fireEvent.click(searchElement);
 
     expect(mockOnSearchClick).toHaveBeenCalledTimes(1);
+  });
+
+  it("navigates to the Home page when 'Home' link is clicked", () => {
+    render(<Sidebar onSearchClick={mockOnSearchClick} />);
+    const homeLink = screen.getByText("Home");
+
+    fireEvent.click(homeLink);
+
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(homeLink.closest("a")).toHaveAttribute("href", "/");
   });
 });

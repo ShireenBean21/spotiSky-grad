@@ -28,7 +28,7 @@ describe("Header", () => {
     useRouter.mockReturnValue({ query: {} });
     render(<Header showSearchBar={true} />);
     // Check for the presence of the search bar
-    const searchBar = screen.getByRole("textbox"); // Assuming the search bar is a textbox
+    const searchBar = screen.getByRole("textbox");
     expect(searchBar).toBeInTheDocument();
   });
 
