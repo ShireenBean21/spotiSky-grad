@@ -1,21 +1,27 @@
-// app/login/page.tsx
-import Layout from "../components/Layout";
+"use client";
 
-const Login = () => {
-  // Hardcoded Spotify authorization URL
-  const authUrl =
-    "https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&response_type=code&redirect_uri=YOUR_REDIRECT_URI&scope=YOUR_SCOPES";
+import { signIn } from "next-auth/react";
+import Image from "next/image";
+
+export default function Login() {
+  const handleLogin = () => {
+    signIn("spotify", { callbackUrl: "http://localhost:3000" });
+  };
 
   return (
-    <Layout>
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1 className="text-2xl font-bold mb-4">Login to Spotify</h1>
-        <a href={authUrl} className="px-4 py-2 bg-turquoise text-white rounded">
-          Login with Spotify
-        </a>
-      </div>
-    </Layout>
+    <div className="flex flex-col items-center justify-center w-screen h-screen gap-20">
+      <Image
+        src="/images/spotify_logo.png"
+        alt="spotify logo"
+        width={320}
+        height={96}
+      />
+      <button
+        className="flex px-12 py-2 text-lg tracking-widest uppercase rounded-full focus:outline-none bg-primary hover:bg-opacity-80"
+        onClick={handleLogin}
+      >
+        Login
+      </button>
+    </div>
   );
-};
-
-export default Login;
+}
